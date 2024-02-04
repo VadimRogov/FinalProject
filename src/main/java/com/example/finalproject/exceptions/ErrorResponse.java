@@ -7,9 +7,8 @@ import org.springframework.http.HttpStatus;
 
 @Data
 @Builder
-public class ErrorResponse extends EntityNotFoundException {
+public class ErrorResponse {
 
     private String code;
     private String message;
-    private HttpStatus httpStatus;
 }
