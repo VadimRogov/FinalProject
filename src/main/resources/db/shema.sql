@@ -1,12 +1,13 @@
 CREATE TABLE users (
-    id SERIAL PRIMARY KEY,
+    id int PRIMARY KEY,
     balance INT
 );
 
 CREATE TABLE base_operation (
-    id_operation SERIAL PRIMARY KEY,
+    id_operation int PRIMARY KEY,
     id_user INT REFERENCES users(id),
     type_operation INT,
-    amount INT
+    amount INT,
+    timeOperation TIMESTAMP
 );
 

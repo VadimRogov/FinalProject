@@ -1,11 +1,10 @@
 package com.example.finalproject.entity;
 
 import jakarta.persistence.*;
-import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import java.io.Serializable;
+import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
@@ -13,16 +12,20 @@ import java.util.Set;
 @Table(name = "base_operation")
 @Getter
 @Setter
+@AllArgsConstructor
+@NoArgsConstructor
 public class BaseOfOperation implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id_operation;
+    private int id_operation;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "id_user")
     private User user;
     @Column
     private int type_operation;
     @Column
-    private int amount;
+    private long amount;
+    @Column
+    private Date timeOperation;
 }
