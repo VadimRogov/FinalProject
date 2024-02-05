@@ -2,12 +2,17 @@ package com.example.finalproject.entity;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
+
 import java.io.Serializable;
+import java.util.List;
 import java.util.Set;
 
 @Entity
 @Table(name = "base_operation")
-@Data
+@Getter
+@Setter
 public class BaseOfOperation implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
