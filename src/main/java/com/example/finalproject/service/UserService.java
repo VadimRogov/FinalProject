@@ -72,18 +72,9 @@ public class UserService {
         return userRepository.save(user);
     }
 
-    @Query("SELECT type_operation, amount, timeOperation FROM BaseOfOperation")
-    public List<String> getOperationList(
-            @Param("id") long id, @Param("beginDate") Date beginDate, @Param("endDate") Date endDate) {
-        List<String> result = new ArrayList<>();
+    public List<String> getOperationList(long id, Date beginDate, Date endDate) {
         User user = userRepository.findById(id).orElseThrow(() -> new EntityNotFoundException());
-        BaseOfOperation baseOfOperation =
-                operationRepository
-                        .findById((long) user.getId()).orElseThrow(() -> new EntityNotFoundException());
-        result.add(String.valueOf(baseOfOperation.getType_operation()));
-        result.add(String.valueOf(baseOfOperation.getTimeOperation()));
-        result.add(String.valueOf(baseOfOperation.getAmount()));
-        return result;
+        operationRepository.list(user.getId(), beginDate, endDate);
     }
 
     public User getTest(long id) {
