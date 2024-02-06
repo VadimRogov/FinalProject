@@ -9,6 +9,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Date;
+import java.util.List;
+
 @RestController
 @AllArgsConstructor
 public class UserController {
@@ -16,22 +19,33 @@ public class UserController {
     private final UserService userService;
 
     @GetMapping("/getBalance/{id}")
-    ResponseEntity getBalanceById(@PathVariable Long id) {
+    ResponseEntity getBalanceById(@PathVariable long id) {
         User user = userService.getBalance(id);
         return ResponseEntity.status(HttpStatus.OK).body(user);
     }
 
 
     @GetMapping("/takeMoney/{id}")
-    ResponseEntity getTakeMoneyByBalance(@PathVariable Long id, @RequestParam Long money) {
+    ResponseEntity getTakeMoneyByBalance(@PathVariable long id, @RequestParam long money) {
         userService.takeMoney(id, money);
         logger.info("Снятие средств прошло успешно");
         return ResponseEntity.status(HttpStatus.OK).body("Успех (1)");
     }
 
     @GetMapping("/putMoney/{id}")
-    ResponseEntity putMoneyByBalance(@PathVariable Long id, @RequestParam Long money) {
+    ResponseEntity putMoneyByBalance(@PathVariable long id, @RequestParam Long money) {
         userService.putMoney(id, money);
         return ResponseEntity.status(HttpStatus.OK).body("Успех (1)");
+    }
+
+    @GetMapping("/listOperation/{id}")
+    ResponseEntity getListOperations(
+            @PathVariable long id, @RequestParam Date beginDate, @RequestParam Date endDate) {
+        return ResponseEntity.status(HttpStatus.OK).body(userService.getOperationList(id, beginDate, endDate));
+    }
+    @GetMapping("/test/{id}")
+    ResponseEntity getTestUser(@PathVariable long id) {
+        logger.error("Запускаем userService");
+        return ResponseEntity.status(HttpStatus.OK).body(userService.getTest(id));
     }
 }

@@ -7,7 +7,10 @@ import com.example.finalproject.repository.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Service;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -45,6 +48,7 @@ public class UserService {
         logger.debug("Тип операции присвоен");
         baseOfOperations.setAmount(money);
         logger.debug("Сумма присвоенно");
+        baseOfOperations.setTimeOperation(new Date());
         operationRepository.save(baseOfOperations);
         logger.debug("Операции сохранены");
         return userRepository.save(user);
@@ -62,13 +66,28 @@ public class UserService {
         logger.debug("Тип операции присвоен");
         baseOfOperations.setAmount(money);
         logger.debug("Сумма присвоенно");
+        baseOfOperations.setTimeOperation(new Date());
         operationRepository.save(baseOfOperations);
         logger.debug("Операции сохранены");
         return userRepository.save(user);
     }
 
-    public List<String> getOperationList(long id, Date beginDate, Date endDate) {
+    @Query("SELECT type_operation, amount, timeOperation FROM BaseOfOperation")
+    public List<String> getOperationList(
+            @Param("id") long id, @Param("beginDate") Date beginDate, @Param("endDate") Date endDate) {
+        List<String> result = new ArrayList<>();
         User user = userRepository.findById(id).orElseThrow(() -> new EntityNotFoundException());
-        BaseOfOperation baseOfOperation = new BaseOfOperation();
+        BaseOfOperation baseOfOperation =
+                operationRepository
+                        .findById((long) user.getId()).orElseThrow(() -> new EntityNotFoundException());
+        result.add(String.valueOf(baseOfOperation.getType_operation()));
+        result.add(String.valueOf(baseOfOperation.getTimeOperation()));
+        result.add(String.valueOf(baseOfOperation.getAmount()));
+        return result;
+    }
+
+    public User getTest(long id) {
+        logger.error("Запускаем userRepository");
+        return userRepository.listUser(id);
     }
 }
