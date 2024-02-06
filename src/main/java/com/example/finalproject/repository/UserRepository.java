@@ -11,7 +11,7 @@ import java.util.List;
 @Repository
 public interface UserRepository extends JpaRepository<User, Long> {
 
-    @Query("SELECT id, balance FROM User")
+    @Query("SELECT id, balance FROM User WHERE id = :id")
     User listUser(@Param("id") long id);
 
 
