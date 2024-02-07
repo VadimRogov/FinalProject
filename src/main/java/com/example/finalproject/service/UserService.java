@@ -11,6 +11,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Service;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -43,6 +44,7 @@ public class UserService {
         BaseOfOperation baseOfOperations = new BaseOfOperation();
         logger.debug("Сущность успешно создана");
         baseOfOperations.setUser(user);
+        baseOfOperations.setId_user(user.getId());
         logger.debug("user_id присвоенно");
         baseOfOperations.setType_operation(1);
         logger.debug("Тип операции присвоен");
@@ -72,9 +74,9 @@ public class UserService {
         return userRepository.save(user);
     }
 
-    public List<String> getOperationList(long id, Date beginDate, Date endDate) {
+    public List<BaseOfOperation> getOperationList(long id) {
         User user = userRepository.findById(id).orElseThrow(() -> new EntityNotFoundException());
-        operationRepository.list(user.getId(), beginDate, endDate);
+        return operationRepository.list(id);
     }
 
     public User getTest(long id) {

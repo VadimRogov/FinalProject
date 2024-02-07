@@ -23,6 +23,8 @@ public class BaseOfOperation implements Serializable {
     @PrimaryKeyJoinColumn
     private User user;
     @Column
+    private long id_user;
+    @Column
     private int type_operation;
     @Column
     private long amount;

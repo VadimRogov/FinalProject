@@ -40,12 +40,14 @@ public class UserController {
 
     @GetMapping("/listOperation/{id}")
     ResponseEntity getListOperations(
-            @PathVariable long id, @RequestParam Date beginDate, @RequestParam Date endDate) {
-        return ResponseEntity.status(HttpStatus.OK).body(userService.getOperationList(id, beginDate, endDate));
+            @PathVariable long id) {
+        return ResponseEntity.status(HttpStatus.OK).body(userService.getOperationList(id));
     }
+
     @GetMapping("/test/{id}")
     ResponseEntity getTestUser(@PathVariable long id) {
         logger.error("Запускаем userService");
         return ResponseEntity.status(HttpStatus.OK).body(userService.getTest(id));
     }
+
 }
