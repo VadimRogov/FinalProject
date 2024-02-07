@@ -74,9 +74,15 @@ public class UserService {
         return userRepository.save(user);
     }
 
-    public List<BaseOfOperation> getOperationList(long id) {
+    public List<BaseOfOperation> getOperationList(long id, Date beginDate, Date endDate) {
         User user = userRepository.findById(id).orElseThrow(() -> new EntityNotFoundException());
-        return operationRepository.list(id);
+
+        if (beginDate == null || endDate == null) {
+            return operationRepository.findOperationsByUserId(user.getId());
+        } else {
+            return operationRepository.findOperationsByUserIdAndDateRange(user.getId(), beginDate, endDate);
+        }
+
     }
 
     public User getTest(long id) {
