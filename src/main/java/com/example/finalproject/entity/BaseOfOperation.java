@@ -20,7 +20,7 @@ public class BaseOfOperation implements Serializable {
     private int id_operation;
 
     @ManyToOne
-    @JoinColumn(name = "id_user", nullable = false)
+    @JoinColumn(name = "user_id")
     private User user;
     @Column
     private int type_operation;

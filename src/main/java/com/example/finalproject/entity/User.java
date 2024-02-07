@@ -20,6 +20,4 @@ public class User implements Serializable {
     private long id;
     @Column
     private long balance;
-    @OneToMany(mappedBy = "user")
-    List<BaseOfOperation> listBase;
 }
