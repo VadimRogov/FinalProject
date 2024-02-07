@@ -17,8 +17,9 @@ public class User implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column
-    private long user_id;
+    private long id;
     @Column
     private long balance;
-
+    @OneToMany(mappedBy = "user")
+    List<BaseOfOperation> listBase;
 }

@@ -19,8 +19,8 @@ public class BaseOfOperation implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id_operation;
 
-    @ManyToOne(cascade = CascadeType.ALL)
-    @PrimaryKeyJoinColumn
+    @ManyToOne
+    @JoinColumn(name = "id_user", nullable = false)
     private User user;
     @Column
     private int type_operation;

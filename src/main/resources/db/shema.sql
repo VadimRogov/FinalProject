@@ -1,5 +1,5 @@
 CREATE TABLE users (
-    user_id int PRIMARY KEY,
+    id int PRIMARY KEY,
     balance INT
 );
 

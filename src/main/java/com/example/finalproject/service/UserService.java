@@ -73,9 +73,9 @@ public class UserService {
         User user = userRepository.findById(id).orElseThrow(() -> new EntityNotFoundException());
 
         if (beginDate == null || endDate == null) {
-            return operationRepository.findOperationsByUserId(user.getUser_id());
+            return operationRepository.findOperationsByUserId(user.getId());
         } else {
-            return operationRepository.findOperationsByUserIdAndDateRange(user.getUser_id(), beginDate, endDate);
+            return operationRepository.findOperationsByUserIdAndDateRange(user.getId(), beginDate, endDate);
         }
     }
 
