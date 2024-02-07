@@ -7,11 +7,7 @@ import com.example.finalproject.repository.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Service;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -44,7 +40,6 @@ public class UserService {
         BaseOfOperation baseOfOperations = new BaseOfOperation();
         logger.debug("Сущность успешно создана");
         baseOfOperations.setUser(user);
-        baseOfOperations.setId_user(user.getId());
         logger.debug("user_id присвоенно");
         baseOfOperations.setType_operation(1);
         logger.debug("Тип операции присвоен");
@@ -78,11 +73,10 @@ public class UserService {
         User user = userRepository.findById(id).orElseThrow(() -> new EntityNotFoundException());
 
         if (beginDate == null || endDate == null) {
-            return operationRepository.findOperationsByUserId(user.getId());
+            return operationRepository.findOperationsByUserId(user.getUser_id());
         } else {
-            return operationRepository.findOperationsByUserIdAndDateRange(user.getId(), beginDate, endDate);
+            return operationRepository.findOperationsByUserIdAndDateRange(user.getUser_id(), beginDate, endDate);
         }
-
     }
 
     public User getTest(long id) {
