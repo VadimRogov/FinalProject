@@ -7,6 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import java.util.Date;
 
@@ -15,6 +16,7 @@ import java.util.Date;
 public class UserController {
     private static final Logger logger = LoggerFactory.getLogger(UserController.class);
     private final UserService userService;
+
 
     @GetMapping("/getBalance/{id}")
     ResponseEntity getBalanceById(@PathVariable long id) {
@@ -42,11 +44,10 @@ public class UserController {
             @RequestParam(value = "endDate", required = false) Date endDate) {
         return ResponseEntity.status(HttpStatus.OK).body(userService.getOperationList(id, beginDate, endDate));
     }
+    /*
+    ResponseEntity transferMoneyById(
+            @PathVariable long sender_id, @RequestParam long recipient_id, @RequestParam long money
+    )
 
-    @GetMapping("/test/{id}")
-    ResponseEntity getTestUser(@PathVariable long id) {
-        logger.error("Запускаем userService");
-        return ResponseEntity.status(HttpStatus.OK).body(userService.getTest(id));
-    }
-
+     */
 }
