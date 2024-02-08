@@ -2,11 +2,8 @@ package com.example.finalproject.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
-
 import java.io.Serializable;
 import java.util.Date;
-import java.util.List;
-import java.util.Set;
 
 @Entity
 @Table(name = "base_operation")
@@ -18,9 +15,7 @@ public class BaseOfOperation implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id_operation;
-
     @ManyToOne
-    @JoinColumn(name = "user_id")
     private User user;
     @Column
     private int type_operation;

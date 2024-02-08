@@ -11,9 +11,7 @@ import java.util.List;
 @Repository
 public interface OperationRepository extends JpaRepository<BaseOfOperation, Long> {
 
-    @Query("SELECT b " +
-            "FROM BaseOfOperation b " +
-            "WHERE b.user = :id AND b.timeOperation >= :beginDate AND b.timeOperation <= :endDate")
+    @Query("SELECT b FROM BaseOfOperation b WHERE b.user = :id AND b.timeOperation >= :beginDate AND b.timeOperation <= :endDate")
     List<BaseOfOperation> findOperationsByUserIdAndDateRange(@Param("id") long id,
                                                        @Param("beginDate") Date beginDate,
                                                        @Param("endDate") Date endDate);
