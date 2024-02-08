@@ -17,14 +17,14 @@ public class UserController {
     private static final Logger logger = LoggerFactory.getLogger(UserController.class);
     private final UserService userService;
 
-
+    @Transactional
     @GetMapping("/getBalance/{id}")
     ResponseEntity getBalanceById(@PathVariable long id) {
         User user = userService.getBalance(id);
         return ResponseEntity.status(HttpStatus.OK).body(user);
     }
 
-
+    @Transactional
     @GetMapping("/takeMoney/{id}")
     ResponseEntity getTakeMoneyByBalance(@PathVariable long id, @RequestParam long money) {
         userService.takeMoney(id, money);
@@ -32,22 +32,31 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.OK).body("Успех (1)");
     }
 
+    @Transactional
     @GetMapping("/putMoney/{id}")
-    ResponseEntity putMoneyByBalance(@PathVariable long id, @RequestParam Long money) {
+    ResponseEntity putMoneyByBalance(@PathVariable long id, @RequestParam long money) {
         userService.putMoney(id, money);
         return ResponseEntity.status(HttpStatus.OK).body("Успех (1)");
     }
 
+    @Transactional
     @GetMapping("/listOperation/{id}")
     ResponseEntity getListOperations(
-            @PathVariable long id, @RequestParam(value = "beginDate", required = false) Date beginDate,
+            @PathVariable long id,
+            @RequestParam(value = "beginDate", required = false) Date beginDate,
             @RequestParam(value = "endDate", required = false) Date endDate) {
+        logger.info("Вызываем сервис, передаём параметры");
         return ResponseEntity.status(HttpStatus.OK).body(userService.getOperationList(id, beginDate, endDate));
     }
-    /*
+    @Transactional
+    @GetMapping("/transfer/{sender_id}/{recipient_id}")
     ResponseEntity transferMoneyById(
-            @PathVariable long sender_id, @RequestParam long recipient_id, @RequestParam long money
-    )
-
-     */
+            @RequestParam(value = "sender_id") long sender_id,
+            @RequestParam(value = "recipient_id") long recipient_id,
+            @RequestParam(value = "money") long money) {
+        logger.info("Вызываем сервис, передаём параметры");
+        return ResponseEntity.status(HttpStatus.OK).body(
+                userService.transferMoney(sender_id, recipient_id, money));
+    }
 }
+

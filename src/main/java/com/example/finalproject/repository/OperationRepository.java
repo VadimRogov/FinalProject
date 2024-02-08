@@ -12,12 +12,13 @@ import java.util.List;
 
 @Repository
 public interface OperationRepository extends JpaRepository<BaseOfOperation, Long> {
-
+    @Transactional
     @Query("SELECT b FROM BaseOfOperation b WHERE b.user = :id AND b.timeOperation >= :beginDate AND b.timeOperation <= :endDate")
     List<BaseOfOperation> findOperationsByUserIdAndDateRange(@Param("id") long id,
                                                        @Param("beginDate") Date beginDate,
                                                        @Param("endDate") Date endDate);
 
-    @Query("SELECT b FROM BaseOfOperation b WHERE b.user = :id")
+    //@Query("SELECT b FROM BaseOfOperation b WHERE b.user = :id")
+    @Transactional
     List<BaseOfOperation> findOperationsByUserId(@Param("id") long id);
 }

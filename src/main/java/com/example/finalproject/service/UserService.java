@@ -10,6 +10,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -24,19 +25,19 @@ public class UserService {
         this.operationRepository = operationRepository;
     }
 
-
+    @Transactional
     public User getBalance(long id) {
         return userRepository.findById(id).orElseThrow(() -> new EntityNotFoundException());
     }
-
+    @Transactional
     public User takeMoney(long id, long money) {
         logger.debug("Поиск пользователя");
         User user = userRepository.findById(id).orElseThrow(() -> new EntityNotFoundException());
         logger.debug("пользователь найден");
-        if(user.getBalance() >= money) {
+        if (user.getBalance() >= money) {
             user.setBalance(user.getBalance() - money);
-        }else {
-            throw new IllegalArgumentException();
+        } else {
+            throw new IllegalArgumentException("Недостаточно средств на счету");
         }
         logger.info("Создаём сущность таблицы операции");
         BaseOfOperation baseOfOperations = new BaseOfOperation();
@@ -52,7 +53,7 @@ public class UserService {
         logger.debug("Операции сохранены");
         return userRepository.save(user);
     }
-
+    @Transactional
     public User putMoney(long id, long money) {
         User user = userRepository.findById(id).orElseThrow(() -> new EntityNotFoundException());
         user.setBalance(user.getBalance() + money);
@@ -70,16 +71,47 @@ public class UserService {
         logger.debug("Операции сохранены");
         return userRepository.save(user);
     }
-
-    public List<BaseOfOperation> getOperationList(long id, Date beginDate, Date endDate) {
+    @Transactional
+    public List<String> getOperationList(long id, Date beginDate, Date endDate) {
+        logger.info("Поиск пользователя");
         User user = userRepository.findById(id).orElseThrow(() -> new EntityNotFoundException());
+        logger.info("Пользователь найден");
+        List<String> result = new ArrayList<>();
 
         if (beginDate == null || endDate == null) {
-            return operationRepository.findOperationsByUserId(user.getId());
+            logger.info("Выборка всех значений");
+            List<BaseOfOperation> list = operationRepository.findOperationsByUserId(user.getId());
+            for (BaseOfOperation e : list) {
+                result.add("Cумма: " + String.valueOf(e.getAmount()));
+                result.add("Тип операции: " + String.valueOf(e.getType_operation()));
+                result.add("Время операции: " + String.valueOf(e.getTimeOperation()));
+            }
+            return result;
         } else {
-            return operationRepository.findOperationsByUserIdAndDateRange(user.getId(), beginDate, endDate);
+            logger.info("Выборка по id и диапозону дат");
+            List<BaseOfOperation> listRange =
+                    operationRepository.findOperationsByUserIdAndDateRange(user.getId(), beginDate, endDate);
+            for (BaseOfOperation e : listRange) {
+                result.add("Cумма: " + String.valueOf(e.getAmount()));
+                result.add("Тип операции: " + String.valueOf(e.getType_operation()));
+                result.add("Время операции: " + String.valueOf(e.getTimeOperation()));
+            }
+            return result;
         }
     }
+    @Transactional
+    public String transferMoney(long sender_id, long recipient_id, long money) {
+        User sender = userRepository.findById(sender_id).orElseThrow(() -> new EntityNotFoundException());
+        User recipient = userRepository.findById(recipient_id).orElseThrow(() -> new EntityNotFoundException());
+        if(sender.getBalance() >= money) {
+            sender.setBalance(sender.getBalance() - money);
+            recipient.setBalance(recipient.getBalance() + money);
+            userRepository.save(sender);
+            userRepository.save(recipient);
+            return "Успех (1)";
+        }else {
+            return "Ошибка при выполнении операции";
+        }
 
-
+    }
 }
