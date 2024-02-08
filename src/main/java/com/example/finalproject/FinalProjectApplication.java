@@ -28,6 +28,7 @@ public class FinalProjectApplication {
 
         em.getTransaction().commit();
         em.close();
+        emf.close();
     }
 
 }
