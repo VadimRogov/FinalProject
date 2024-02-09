@@ -3,6 +3,7 @@ package com.example.finalproject.entity;
 import jakarta.persistence.*;
 import lombok.*;
 import java.io.Serializable;
+import java.math.BigDecimal;
 
 @Entity
 @Table(name = "users")
@@ -17,5 +18,5 @@ public class User implements Serializable {
     @Column
     private long id;
     @Column
-    private long balance;
+    private BigDecimal balance;
 }

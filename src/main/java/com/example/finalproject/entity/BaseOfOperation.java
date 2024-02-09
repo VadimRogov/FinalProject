@@ -3,6 +3,7 @@ package com.example.finalproject.entity;
 import jakarta.persistence.*;
 import lombok.*;
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.Date;
 
 @Entity
@@ -20,7 +21,7 @@ public class BaseOfOperation implements Serializable {
     @Column
     private int type_operation;
     @Column
-    private long amount;
+    private BigDecimal amount;
     @Column
     private Date timeOperation;
 }

@@ -10,6 +10,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -26,16 +27,17 @@ public class UserService {
     }
 
     @Transactional
-    public User getBalance(long id) {
-        return userRepository.findById(id).orElseThrow(() -> new EntityNotFoundException());
+    public String getBalance(long id) {
+        User user = userRepository.findById(id).orElseThrow(() -> new EntityNotFoundException());
+        return String.valueOf(user.getBalance());
     }
     @Transactional
-    public User takeMoney(long id, long money) {
+    public String takeMoney(long id, BigDecimal money) {
         logger.debug("Поиск пользователя");
         User user = userRepository.findById(id).orElseThrow(() -> new EntityNotFoundException());
         logger.debug("пользователь найден");
-        if (user.getBalance() >= money) {
-            user.setBalance(user.getBalance() - money);
+        if (user.getBalance().compareTo(money) >= 0) {
+            user.setBalance(user.getBalance().subtract(money));
         } else {
             throw new IllegalArgumentException("Недостаточно средств на счету");
         }
@@ -51,12 +53,13 @@ public class UserService {
         baseOfOperations.setTimeOperation(new Date());
         operationRepository.save(baseOfOperations);
         logger.debug("Операции сохранены");
-        return userRepository.save(user);
+        userRepository.save(user);
+        return "Успех (1)";
     }
     @Transactional
-    public User putMoney(long id, long money) {
+    public String putMoney(long id, BigDecimal money) {
         User user = userRepository.findById(id).orElseThrow(() -> new EntityNotFoundException());
-        user.setBalance(user.getBalance() + money);
+        user.setBalance(user.getBalance().subtract(money));
         logger.info("Создаём сущность таблицы операции");
         BaseOfOperation baseOfOperations = new BaseOfOperation();
         logger.debug("Сущность успешно создана");
@@ -69,7 +72,8 @@ public class UserService {
         baseOfOperations.setTimeOperation(new Date());
         operationRepository.save(baseOfOperations);
         logger.debug("Операции сохранены");
-        return userRepository.save(user);
+        userRepository.save(user);
+        return "Успех (1)";
     }
     @Transactional
     public List<String> getOperationList(long id, Date beginDate, Date endDate) {
@@ -100,12 +104,12 @@ public class UserService {
         }
     }
     @Transactional
-    public String transferMoney(long sender_id, long recipient_id, long money) {
+    public String transferMoney(long sender_id, long recipient_id, BigDecimal money) {
         User sender = userRepository.findById(sender_id).orElseThrow(() -> new EntityNotFoundException());
         User recipient = userRepository.findById(recipient_id).orElseThrow(() -> new EntityNotFoundException());
-        if(sender.getBalance() >= money) {
-            sender.setBalance(sender.getBalance() - money);
-            recipient.setBalance(recipient.getBalance() + money);
+        if(sender.getBalance().compareTo(money) >= 0) {
+            sender.setBalance(sender.getBalance().subtract(money));
+            recipient.setBalance(recipient.getBalance().add(money));
             userRepository.save(sender);
             userRepository.save(recipient);
             return "Успех (1)";
