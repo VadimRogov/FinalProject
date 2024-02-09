@@ -32,12 +32,13 @@ public class UserService {
         return String.valueOf(user.getBalance());
     }
     @Transactional
-    public String takeMoney(long id, BigDecimal money) {
+    public User takeMoney(long id, BigDecimal money) {
         logger.debug("Поиск пользователя");
         User user = userRepository.findById(id).orElseThrow(() -> new EntityNotFoundException());
         logger.debug("пользователь найден");
         if (user.getBalance().compareTo(money) >= 0) {
             user.setBalance(user.getBalance().subtract(money));
+
         } else {
             throw new IllegalArgumentException("Недостаточно средств на счету");
         }
@@ -54,7 +55,7 @@ public class UserService {
         operationRepository.save(baseOfOperations);
         logger.debug("Операции сохранены");
         userRepository.save(user);
-        return "Успех (1)";
+        return user;
     }
     @Transactional
     public String putMoney(long id, BigDecimal money) {

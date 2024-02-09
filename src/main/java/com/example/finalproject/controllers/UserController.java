@@ -1,5 +1,6 @@
 package com.example.finalproject.controllers;
 
+import com.example.finalproject.entity.User;
 import com.example.finalproject.service.UserService;
 import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
@@ -8,7 +9,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
-
 import java.math.BigDecimal;
 import java.util.Date;
 
@@ -27,8 +27,9 @@ public class UserController {
     @Transactional
     @GetMapping("/takeMoney/{id}")
     ResponseEntity getTakeMoneyByBalance(@PathVariable long id, @RequestParam BigDecimal money) {
+        User user = userService.takeMoney(id, money);
         logger.info("Вызываем сервис, передаём аргументы");
-        return ResponseEntity.status(HttpStatus.OK).body(userService.takeMoney(id, money));
+        return ResponseEntity.status(HttpStatus.OK).body(user.getBalance());
     }
 
     @Transactional
