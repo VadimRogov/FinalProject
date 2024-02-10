@@ -26,9 +26,9 @@ public class UserService {
     }
 
     @Transactional
-    public String getBalance(long id) {
+    public BigDecimal getBalance(long id) {
         User user = userRepository.findById(id).orElseThrow(() -> new EntityNotFoundException());
-        return String.valueOf(user.getBalance());
+        return user.getBalance();
     }
 
     @Transactional
