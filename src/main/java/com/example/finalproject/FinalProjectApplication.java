@@ -18,12 +18,13 @@ public class FinalProjectApplication implements CommandLineRunner {
 
     public static void main(String[] args) {
         SpringApplication.run(FinalProjectApplication.class, args);
+
         User user1 = new User();
         user1.setBalance(BigDecimal.valueOf(1000));
         User user2 = new User();
-        user1.setBalance(BigDecimal.valueOf(5000));
+        user2.setBalance(BigDecimal.valueOf(3000));
         User user3 = new User();
-        user1.setBalance(BigDecimal.valueOf(3000));
+        user3.setBalance(BigDecimal.valueOf(5000));
 
         userRepository.save(user1);
         userRepository.save(user2);
@@ -32,6 +33,7 @@ public class FinalProjectApplication implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
+
 
     }
 }

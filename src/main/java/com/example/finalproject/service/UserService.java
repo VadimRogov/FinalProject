@@ -30,6 +30,7 @@ public class UserService {
         User user = userRepository.findById(id).orElseThrow(() -> new EntityNotFoundException());
         return String.valueOf(user.getBalance());
     }
+
     @Transactional
     public User takeMoney(long id, BigDecimal money) {
         logger.debug("Поиск пользователя");

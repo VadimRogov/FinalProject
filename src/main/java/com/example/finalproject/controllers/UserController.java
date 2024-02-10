@@ -21,16 +21,14 @@ public class UserController {
 
     @GetMapping("/getBalance/{id}")
     ResponseEntity getBalanceById(@PathVariable long id) {
-        userService.getBalance(id);
-        return ResponseEntity.status(HttpStatus.OK).body("Успешно (1)");
-    }
 
+        return ResponseEntity.status(HttpStatus.OK).body(userService.getBalance(id));
+    }
     @Transactional
     @GetMapping("/takeMoney/{id}")
     ResponseEntity getTakeMoneyByBalance(@PathVariable long id, @RequestParam BigDecimal money) {
-        User user = userService.takeMoney(id, money);
         logger.info("Вызываем сервис, передаём аргументы");
-        return ResponseEntity.status(HttpStatus.OK).body(user.getBalance());
+        return ResponseEntity.status(HttpStatus.OK).body(userService.takeMoney(id, money));
     }
 
     @Transactional

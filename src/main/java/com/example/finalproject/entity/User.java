@@ -17,6 +17,6 @@ public class User implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column
     private long id;
-    @Column
+    @Column(name = "balance")
     private BigDecimal balance;
 }
