@@ -21,7 +21,8 @@ public class UserController {
 
     @GetMapping("/getBalance/{id}")
     ResponseEntity getBalanceById(@PathVariable long id) {
-        return ResponseEntity.status(HttpStatus.OK).body(userService.getBalance(id));
+        userService.getBalance(id);
+        return ResponseEntity.status(HttpStatus.OK).body("Успешно (1)");
     }
 
     @Transactional
