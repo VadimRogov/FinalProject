@@ -13,8 +13,6 @@ import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.http.ResponseEntity;
-
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
@@ -55,7 +53,7 @@ public class UserServiceTest {
     }
 
     @Test
-    public void OperationRepository() {
+    public void testOperationRepository() {
         logger.info("Создаём пользователя");
         User user1 = new User();
         user1.setId(1L);
