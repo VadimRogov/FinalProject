@@ -1,6 +1,5 @@
 package com.example.finalproject.controllers;
 
-import com.example.finalproject.entity.User;
 import com.example.finalproject.service.UserService;
 import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
@@ -21,7 +20,6 @@ public class UserController {
 
     @GetMapping("/getBalance/{id}")
     ResponseEntity getBalanceById(@PathVariable long id) {
-
         return ResponseEntity.status(HttpStatus.OK).body(userService.getBalance(id));
     }
     @Transactional
