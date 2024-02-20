@@ -28,24 +28,21 @@ public class UserServiceTest {
     @Mock
     OperationRepository operationRepository;
 
-    Logger logger = LoggerFactory.getLogger(UserServiceTest.class);
 
     @Test
     public void testGetBalance() {
-        logger.info("Arrange");
+        // Arrange
         long userId = 1L;
         BigDecimal expectedBalance = new BigDecimal(1000);
         User user = new User();
         user.setId(userId);
         user.setBalance(expectedBalance);
-        logger.info("id: " + user.getId() + "balance: " + user.getBalance());
         Mockito.when(userRepository.findById(user.getId())).thenReturn(Optional.of(user));
 
-        logger.info("Act");
+        // Act
         BigDecimal actualBalance = userService.getBalance(userId);
-        logger.info("actual: " + actualBalance);
 
-        logger.info("Assert");
+        // Assert
         Assertions.assertEquals(expectedBalance, actualBalance);
     }
 

@@ -14,7 +14,6 @@ import java.util.Date;
 @RestController
 @AllArgsConstructor
 public class UserController {
-    private static final Logger logger = LoggerFactory.getLogger(UserController.class);
     private final UserService userService;
 
 
@@ -25,7 +24,6 @@ public class UserController {
     @Transactional
     @GetMapping("/takeMoney/{id}")
     ResponseEntity getTakeMoneyByBalance(@PathVariable long id, @RequestParam BigDecimal money) {
-        logger.info("Вызываем сервис, передаём аргументы");
         return ResponseEntity.status(HttpStatus.OK).body(userService.takeMoney(id, money));
     }
 
@@ -41,7 +39,6 @@ public class UserController {
             @PathVariable long id,
             @RequestParam(value = "beginDate", required = false) Date beginDate,
             @RequestParam(value = "endDate", required = false) Date endDate) {
-        logger.info("Вызываем сервис, передаём параметры");
         return ResponseEntity.status(HttpStatus.OK).body(userService.getOperationList(id, beginDate, endDate));
     }
     @Transactional
@@ -50,7 +47,6 @@ public class UserController {
             @RequestParam(value = "sender_id") long sender_id,
             @RequestParam(value = "recipient_id") long recipient_id,
             @RequestParam(value = "money") BigDecimal money) {
-        logger.info("Вызываем сервис, передаём параметры");
         return ResponseEntity.status(HttpStatus.OK).body(
                 userService.transferMoney(sender_id, recipient_id, money));
     }
