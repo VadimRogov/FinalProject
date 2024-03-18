@@ -1,0 +1,17 @@
+version: '1.0'
+services:
+  db:
+    image: fef9862f2291
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=1270
+      - POSTGRES_DB=final-db
+
+  api:
+    image: 0ccfd27055f7
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/final-db
+    ports:
+      - '9090:9090'
+    depends_on:
+      - db
